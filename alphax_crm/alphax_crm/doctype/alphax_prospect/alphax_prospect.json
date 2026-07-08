@@ -1,0 +1,252 @@
+{
+ "actions": [],
+ "autoname": "format:PROSP-{YYYY}-{#####}",
+ "creation": "2026-07-08 09:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "contact_section",
+  "first_name",
+  "last_name",
+  "prospect_name",
+  "status",
+  "contact_col",
+  "email_id",
+  "mobile_no",
+  "phone",
+  "company_section",
+  "company_name",
+  "job_title",
+  "industry",
+  "company_col",
+  "website",
+  "city",
+  "source",
+  "import_batch",
+  "calling_section",
+  "call_attempts",
+  "last_call_date",
+  "calling_col",
+  "call_notes",
+  "conversion_section",
+  "lead",
+  "converted_on",
+  "alphax_pdpl_anonymized"
+ ],
+ "fields": [
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "prospect_name",
+   "fieldtype": "Data",
+   "label": "Prospect Name",
+   "read_only": 1
+  },
+  {
+   "default": "New",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "New\nContacted\nInterested\nNot Interested\nInvalid\nConverted",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile No",
+   "options": "Phone",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "company_section",
+   "fieldtype": "Section Break",
+   "label": "Organization"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "label": "Job Title"
+  },
+  {
+   "fieldname": "industry",
+   "fieldtype": "Data",
+   "label": "Industry"
+  },
+  {
+   "fieldname": "company_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "website",
+   "fieldtype": "Data",
+   "label": "Website / LinkedIn"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Source"
+  },
+  {
+   "fieldname": "import_batch",
+   "fieldtype": "Data",
+   "label": "Import Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "calling_section",
+   "fieldtype": "Section Break",
+   "label": "Calling"
+  },
+  {
+   "default": "0",
+   "fieldname": "call_attempts",
+   "fieldtype": "Int",
+   "label": "Call Attempts"
+  },
+  {
+   "fieldname": "last_call_date",
+   "fieldtype": "Date",
+   "label": "Last Call Date"
+  },
+  {
+   "fieldname": "calling_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "call_notes",
+   "fieldtype": "Small Text",
+   "label": "Call Notes"
+  },
+  {
+   "fieldname": "conversion_section",
+   "fieldtype": "Section Break",
+   "label": "Conversion"
+  },
+  {
+   "fieldname": "lead",
+   "fieldtype": "Link",
+   "label": "Lead",
+   "options": "Lead",
+   "read_only": 1
+  },
+  {
+   "fieldname": "converted_on",
+   "fieldtype": "Datetime",
+   "label": "Converted On",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "alphax_pdpl_anonymized",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "PDPL Anonymized",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-07-08 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Prospect",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "AlphaX Data Entry",
+   "write": 1
+  }
+ ],
+ "search_fields": "prospect_name,email_id,mobile_no,company_name",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "prospect_name",
+ "track_changes": 1
+}
