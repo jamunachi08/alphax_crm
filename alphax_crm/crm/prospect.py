@@ -43,12 +43,20 @@ def validate(doc, method=None):
 # ---------------------------------------------------------------------------
 def on_update(doc, method=None):
     settings = get_settings()
+<<<<<<< HEAD
     before = doc.get_doc_before_save()
     previous_status = before.get("status") if before else None
 
     # Record status change as activity.
     if settings.get("activity_monitor_enabled", 1) and settings.get("capture_status_change", 1):
         if before and previous_status != doc.get("status") and doc.get("status"):
+=======
+
+    # Record status change as activity.
+    if settings.get("activity_monitor_enabled", 1) and settings.get("capture_status_change", 1):
+        before = doc.get_doc_before_save()
+        if before and before.get("status") != doc.get("status") and doc.get("status"):
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
             try:
                 from alphax_crm.crm.activity import record_activity
 
@@ -63,10 +71,15 @@ def on_update(doc, method=None):
         if settings.get("prospect_autoconvert", 1) and not doc.get("lead"):
             try:
                 _convert_to_lead(doc, settings)
+<<<<<<< HEAD
                 _clear_conversion_failure(doc)
             except Exception as e:
                 log_error("prospect convert")
                 _revert_status(doc, previous_status, e)
+=======
+            except Exception:
+                log_error("prospect convert")
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
     elif behavior == BEHAVIOR_FOLLOWUP:
         try:
             _ensure_followup(doc)
@@ -74,6 +87,7 @@ def on_update(doc, method=None):
             log_error("prospect followup")
 
 
+<<<<<<< HEAD
 def _revert_status(doc, previous_status, error):
     """Conversion failed after the status change was already committed
     (on_update runs post-save). Left as-is, the Prospect would show a
@@ -132,6 +146,8 @@ def _active_lead_workflow_field():
     return frappe.local._alphax_active_lead_wf_field
 
 
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
 def _convert_to_lead(doc, settings):
     # Optionally route via the Smart Lead data-entry doc (config-driven).
     if (settings.get("prospect_convert_target") == "Smart Lead then Lead"
@@ -172,6 +188,7 @@ def _convert_to_lead(doc, settings):
     if doc.get("prospect_owner"):
         lead.lead_owner = doc.prospect_owner
 
+<<<<<<< HEAD
     # Enter the review workflow — but only touch alphax_review_status if
     # that's actually the field the *currently active* Lead workflow
     # governs. It belonged to the now-superseded "AlphaX Lead Review"
@@ -183,6 +200,11 @@ def _convert_to_lead(doc, settings):
     # and let Frappe's own engine put the Lead in the real entry state.
     review_required = settings.get("prospect_review_required", 1)
     if meta.has_field("alphax_review_status") and _active_lead_workflow_field() == "alphax_review_status":
+=======
+    # Enter the review workflow.
+    review_required = settings.get("prospect_review_required", 1)
+    if meta.has_field("alphax_review_status"):
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
         lead.alphax_review_status = "Pending Review" if review_required else "Approved"
     if meta.has_field("alphax_prospect"):
         lead.alphax_prospect = doc.name
@@ -258,7 +280,11 @@ def _convert_via_smart_lead(doc, settings):
         updates = {}
         if meta.has_field("alphax_prospect"):
             updates["alphax_prospect"] = doc.name
+<<<<<<< HEAD
         if meta.has_field("alphax_review_status") and _active_lead_workflow_field() == "alphax_review_status":
+=======
+        if meta.has_field("alphax_review_status"):
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
             updates["alphax_review_status"] = "Pending Review" if settings.get("prospect_review_required", 1) else "Approved"
         if updates:
             frappe.db.set_value("Lead", lead_name, updates, update_modified=False)

@@ -3,6 +3,7 @@
 All notable changes to `alphax_crm`. Versions follow the app version in
 `alphax_crm/__init__.py`, `hooks.py` (`app_version`) and `setup.py`.
 
+<<<<<<< HEAD
 ## [0.13.3] — 2026-08-20
 ### Fixed
 - Prospect → Lead auto-conversion failed with "Workflow State transition
@@ -88,6 +89,8 @@ All notable changes to `alphax_crm`. Versions follow the app version in
   Communication's content, the activity-timeline summary, and the
   Follow-up History view.
 
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
 ## [0.12.2] — 2026-08-18
 ### Fixed
 - Install failed on Frappe Cloud with "Module import failed for AlphaX

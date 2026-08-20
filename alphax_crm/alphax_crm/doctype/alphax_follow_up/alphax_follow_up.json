@@ -16,7 +16,10 @@
   "agent",
   "detail_section",
   "channel",
+<<<<<<< HEAD
   "meeting_type",
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
   "direction",
   "outcome",
   "duration",
@@ -91,6 +94,7 @@
    "in_list_view": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "meeting_type",
    "fieldtype": "Select",
    "label": "Meeting Type",
@@ -100,6 +104,8 @@
    "in_list_view": 1
   },
   {
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
    "fieldname": "direction",
    "fieldtype": "Select",
    "label": "Direction",

@@ -12,6 +12,7 @@ frappe.ui.form.on("AlphaX Prospect", {
         if (frm.doc.lead) {
             frm.add_custom_button(__("Open Lead"), () => frappe.set_route("Form", "Lead", frm.doc.lead));
         }
+<<<<<<< HEAD
         if (frm.doc.conversion_failed) {
             // Persistent — not a one-time toast. Stays until conversion
             // actually succeeds (see _clear_conversion_failure server-side),
@@ -22,6 +23,9 @@ frappe.ui.form.on("AlphaX Prospect", {
                 "red"
             );
         } else if (frm.doc.status) {
+=======
+        if (frm.doc.status) {
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
             frappe.db.get_value("AlphaX Prospect Status", frm.doc.status, "behavior").then((r) => {
                 const b = r.message && r.message.behavior;
                 if (b && b !== "None") {

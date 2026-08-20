@@ -4,7 +4,11 @@ app_publisher = "Neotec Integrated Solutions"
 app_description = "Compliance-grade CRM automation for AlphaX on Frappe/ERPNext."
 app_email = "support@neotec.ai"
 app_license = "Proprietary"
+<<<<<<< HEAD
 app_version = "0.13.3"
+=======
+app_version = "0.12.2"
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
 
 # Requires ERPNext (Lead / Opportunity / CRM doctypes)
 required_apps = ["erpnext"]

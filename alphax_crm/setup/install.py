@@ -19,7 +19,10 @@ def after_install():
     _seed_monitor_fields()
     seed_smart_lead_map()
     seed_prospect_statuses()
+<<<<<<< HEAD
     seed_job_titles()
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
     setup_notifications()
     setup_lead_approval_workflow()
     frappe.db.commit()
@@ -36,7 +39,10 @@ def after_migrate():
     _seed_monitor_fields()
     seed_smart_lead_map()
     seed_prospect_statuses()
+<<<<<<< HEAD
     seed_job_titles()
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
     setup_notifications()
     setup_lead_approval_workflow()
     frappe.db.commit()
@@ -395,6 +401,7 @@ def setup_accounting_dimensions():
     for target in DIM_TARGETS:
         if not frappe.db.exists("DocType", target):
             continue
+<<<<<<< HEAD
         if target == "AlphaX Prospect":
             # Opt-in and restricted (default: Cost Center only) — see
             # prospect_dimensions_enabled / prospect_dimension_fields.
@@ -411,6 +418,8 @@ def setup_accounting_dimensions():
             target_dims = dims
         if not target_dims:
             continue
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
         meta = frappe.get_meta(target)
         rows = []
         anchor = DIM_ANCHOR.get(target)
@@ -422,7 +431,11 @@ def setup_accounting_dimensions():
                 "label": "Accounting Dimensions", "collapsible": 1, "insert_after": anchor,
             })
         prev = "alphax_dimensions_section"
+<<<<<<< HEAD
         for fn, label, doctype in target_dims:
+=======
+        for fn, label, doctype in dims:
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
             if meta.has_field(fn):        # already on the doctype (native or created)
                 prev = fn
                 continue
@@ -587,6 +600,7 @@ def seed_prospect_statuses():
         ).insert(ignore_permissions=True)
 
 
+<<<<<<< HEAD
 def seed_job_titles():
     """Seed the standard Designation master with AlphaX's known job titles
     (from the customer's own job-title drop-list), so AlphaX Prospect's
@@ -629,6 +643,8 @@ def _default_job_titles():
     ]
 
 
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
 def ensure_prospect_defaults():
     if not frappe.db.exists("DocType", "AlphaX CRM Settings"):
         return

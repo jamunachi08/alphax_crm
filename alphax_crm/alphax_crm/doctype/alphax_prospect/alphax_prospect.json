@@ -36,8 +36,11 @@
   "conversion_section",
   "lead",
   "converted",
+<<<<<<< HEAD
   "conversion_failed",
   "conversion_error",
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
   "import_batch"
  ],
  "fields": [
@@ -128,6 +131,7 @@
   },
   {
    "fieldname": "city",
+<<<<<<< HEAD
    "fieldtype": "Link",
    "label": "City",
    "options": "City"
@@ -138,6 +142,15 @@
    "label": "Job Title",
    "options": "Designation",
    "description": "Reuses the standard Designation master (already used for Employees across ERPNext/HR) rather than a new AlphaX-specific list, and seeded with the job titles you provided."
+=======
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "label": "Job Title"
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
   },
   {
    "fieldname": "followup_section",
@@ -217,6 +230,7 @@
    "in_list_view": 1
   },
   {
+<<<<<<< HEAD
    "fieldname": "conversion_failed",
    "fieldtype": "Check",
    "label": "Conversion Failed",
@@ -233,6 +247,8 @@
    "depends_on": "eval:doc.conversion_failed"
   },
   {
+=======
+>>>>>>> 7b84d8994af65258f09478dcce5943e2659c1538
    "fieldname": "import_batch",
    "fieldtype": "Data",
    "label": "Import Batch",
