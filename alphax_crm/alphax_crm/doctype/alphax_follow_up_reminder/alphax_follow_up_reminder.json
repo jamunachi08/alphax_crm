@@ -1,0 +1,149 @@
+{
+ "actions": [],
+ "creation": "2026-11-25 17:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "schedule",
+  "subject",
+  "user",
+  "status",
+  "column_break_1",
+  "occurrence_start",
+  "occurrence_end",
+  "remind_at",
+  "remind_before",
+  "section_channels",
+  "popup",
+  "email",
+  "column_break_2",
+  "email_sent",
+  "snoozed"
+ ],
+ "fields": [
+  {
+   "fieldname": "schedule",
+   "fieldtype": "Link",
+   "label": "Follow-up Schedule",
+   "options": "AlphaX Follow-up Schedule",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Title",
+   "fetch_from": "schedule.subject",
+   "read_only": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Remind",
+   "options": "User",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nDue\nDismissed\nDone\nExpired\nCancelled",
+   "default": "Pending",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "occurrence_start",
+   "fieldtype": "Datetime",
+   "label": "Meeting Starts",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "occurrence_end",
+   "fieldtype": "Datetime",
+   "label": "Meeting Ends"
+  },
+  {
+   "fieldname": "remind_at",
+   "fieldtype": "Datetime",
+   "label": "Remind At",
+   "search_index": 1
+  },
+  {
+   "fieldname": "remind_before",
+   "fieldtype": "Data",
+   "label": "Rule"
+  },
+  {
+   "fieldname": "section_channels",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "popup",
+   "fieldtype": "Check",
+   "label": "Pop-up"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Check",
+   "label": "Email"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_sent",
+   "fieldtype": "Check",
+   "label": "Email Sent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "snoozed",
+   "fieldtype": "Int",
+   "label": "Times Snoozed",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-25 17:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Follow-up Reminder",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "in_create": 1,
+ "read_only": 0,
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "report": 1
+  }
+ ]
+}
