@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "fieldname",
+  "label",
+  "document_type",
+  "report",
+  "as_column",
+  "as_filter"
+ ],
+ "fields": [
+  {
+   "columns": 3,
+   "fieldname": "fieldname",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Fieldname",
+   "reqd": 1,
+   "description": "e.g. cost_center, department, business_unit, territory"
+  },
+  {
+   "columns": 2,
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Label"
+  },
+  {
+   "columns": 2,
+   "fieldname": "document_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "On Document",
+   "options": "\nLead\nOpportunity\nQuotation\nAlphaX PreLead",
+   "description": "Blank: the report's own document if it has the field, else the Lead. Lead fields also filter Opportunity / Quotation reports through the Lead they came from."
+  },
+  {
+   "columns": 3,
+   "fieldname": "report",
+   "fieldtype": "Link",
+   "options": "Report",
+   "in_list_view": 1,
+   "label": "Report",
+   "description": "Blank = all AlphaX CRM reports."
+  },
+  {
+   "columns": 1,
+   "fieldname": "as_column",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Show as Column",
+   "default": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "as_filter",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Available as Filter",
+   "default": "1",
+   "description": "Adds this field as a filter to every AlphaX CRM report (or only the report chosen in Report)."
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-11-25 15:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Monitor Field",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

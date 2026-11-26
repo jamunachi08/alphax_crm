@@ -1,0 +1,400 @@
+{
+ "actions": [],
+ "creation": "2026-11-25 17:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "subject",
+  "platform",
+  "status",
+  "column_break_head",
+  "reference_doctype",
+  "reference_name",
+  "lead",
+  "source_follow_up",
+  "organizer",
+  "lead_owner",
+  "when_section",
+  "start_datetime",
+  "end_datetime",
+  "all_day",
+  "time_zone",
+  "column_break_when",
+  "repeat",
+  "repeat_every",
+  "repeat_until",
+  "where_section",
+  "meeting_link",
+  "location",
+  "create_online_meeting",
+  "online_meeting_platform",
+  "online_meeting_host",
+  "online_meeting_id",
+  "online_meeting_data",
+  "online_meeting_error",
+  "column_break_where",
+  "send_invitation",
+  "invitation_sent_on",
+  "attendees_section",
+  "attendees",
+  "reminders_section",
+  "reminders",
+  "agenda_section",
+  "agenda",
+  "links_section",
+  "completed_follow_up",
+  "column_break_links",
+  "event",
+  "completed_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "FUS-.YYYY.-",
+   "default": "FUS-.YYYY.-",
+   "reqd": 1,
+   "print_hide": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Title",
+   "reqd": 1,
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "platform",
+   "fieldtype": "Select",
+   "label": "Platform",
+   "options": "Call\nMicrosoft Teams\nZoom\nGoogle Meet\nWebex\nWhatsApp\nEmail\nOn-site Visit\nOther",
+   "default": "Microsoft Teams",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Scheduled\nCompleted\nCancelled",
+   "default": "Scheduled",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_head",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_doctype",
+   "fieldtype": "Select",
+   "label": "Regarding",
+   "options": "Lead\nAlphaX PreLead\nOpportunity",
+   "default": "Lead",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Record",
+   "options": "reference_doctype",
+   "reqd": 1,
+   "in_standard_filter": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "lead",
+   "fieldtype": "Link",
+   "options": "Lead",
+   "label": "Lead",
+   "read_only": 1,
+   "in_standard_filter": 1,
+   "search_index": 1,
+   "description": "The Lead this belongs to (set automatically, also when it is about an Opportunity or PreLead of that Lead)."
+  },
+  {
+   "fieldname": "source_follow_up",
+   "fieldtype": "Link",
+   "label": "Follow-up Reference",
+   "options": "AlphaX Follow-up",
+   "no_copy": 1,
+   "set_only_once": 1,
+   "in_standard_filter": 1,
+   "description": "The follow-up this was booked from. Change the next date / time / via there (or here) and save: both stay in step."
+  },
+  {
+   "fieldname": "organizer",
+   "fieldtype": "Link",
+   "label": "Organizer",
+   "options": "User",
+   "default": "__user",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "lead_owner",
+   "fieldtype": "Link",
+   "label": "Lead Owner",
+   "options": "User",
+   "read_only": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "when_section",
+   "fieldtype": "Section Break",
+   "label": "When"
+  },
+  {
+   "fieldname": "start_datetime",
+   "fieldtype": "Datetime",
+   "label": "Start Time",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "end_datetime",
+   "fieldtype": "Datetime",
+   "label": "End Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "all_day",
+   "fieldtype": "Check",
+   "label": "All Day"
+  },
+  {
+   "fieldname": "time_zone",
+   "fieldtype": "Data",
+   "label": "Entered in Time Zone",
+   "read_only": 1,
+   "description": "Times are stored in the system time zone; this is the zone the organizer picked in the scheduler."
+  },
+  {
+   "fieldname": "column_break_when",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "repeat",
+   "fieldtype": "Select",
+   "label": "Repeat",
+   "options": "Does not repeat\nDaily\nEvery working day\nWeekly\nMonthly",
+   "default": "Does not repeat"
+  },
+  {
+   "fieldname": "repeat_every",
+   "fieldtype": "Int",
+   "label": "Every",
+   "default": "1",
+   "non_negative": 1,
+   "depends_on": "eval:doc.repeat && doc.repeat!='Does not repeat' && doc.repeat!='Every working day'",
+   "description": "1 = every day / week / month, 2 = every other …"
+  },
+  {
+   "fieldname": "repeat_until",
+   "fieldtype": "Date",
+   "label": "Until",
+   "depends_on": "eval:doc.repeat && doc.repeat!='Does not repeat'"
+  },
+  {
+   "fieldname": "where_section",
+   "fieldtype": "Section Break",
+   "label": "Where"
+  },
+  {
+   "fieldname": "meeting_link",
+   "fieldtype": "Data",
+   "label": "Meeting Link",
+   "options": "URL"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "create_online_meeting",
+   "fieldtype": "Check",
+   "label": "Create the Online Meeting Automatically",
+   "description": "Uses the platform's Meeting Connection to create the meeting and its join link (and keep it in step when the time changes or the follow-up is cancelled)."
+  },
+  {
+   "fieldname": "online_meeting_platform",
+   "fieldtype": "Data",
+   "label": "Created In",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "online_meeting_host",
+   "fieldtype": "Data",
+   "label": "Hosted By",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "online_meeting_id",
+   "fieldtype": "Data",
+   "label": "Online Meeting ID",
+   "read_only": 1,
+   "no_copy": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "online_meeting_data",
+   "fieldtype": "Small Text",
+   "label": "Online Meeting Data",
+   "read_only": 1,
+   "no_copy": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "online_meeting_error",
+   "fieldtype": "Small Text",
+   "label": "Online Meeting Problem",
+   "read_only": 1,
+   "no_copy": 1,
+   "depends_on": "online_meeting_error"
+  },
+  {
+   "fieldname": "column_break_where",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "send_invitation",
+   "fieldtype": "Check",
+   "label": "Email the Invitation to Attendees",
+   "description": "Sends a calendar invitation (.ics) with the attachments when the meeting is saved and whenever its time changes."
+  },
+  {
+   "fieldname": "invitation_sent_on",
+   "fieldtype": "Datetime",
+   "label": "Invitation Sent On",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "attendees_section",
+   "fieldtype": "Section Break",
+   "label": "Attendees"
+  },
+  {
+   "fieldname": "attendees",
+   "fieldtype": "Table",
+   "label": "Attendees",
+   "options": "AlphaX Follow-up Attendee"
+  },
+  {
+   "fieldname": "reminders_section",
+   "fieldtype": "Section Break",
+   "label": "Reminders",
+   "description": "Sent to the organizer, the Lead Owner and internal attendees. Each reminder pops up in the ERP and/or arrives by email."
+  },
+  {
+   "fieldname": "reminders",
+   "fieldtype": "Table",
+   "label": "Reminders",
+   "options": "AlphaX Follow-up Reminder Rule"
+  },
+  {
+   "fieldname": "agenda_section",
+   "fieldtype": "Section Break",
+   "label": "Agenda"
+  },
+  {
+   "fieldname": "agenda",
+   "fieldtype": "Text Editor",
+   "label": "Agenda / Details"
+  },
+  {
+   "fieldname": "links_section",
+   "fieldtype": "Section Break",
+   "label": "Links",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "completed_follow_up",
+   "fieldtype": "Link",
+   "label": "Outcome Logged In",
+   "options": "AlphaX Follow-up",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "column_break_links",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "label": "Calendar Event",
+   "options": "Event",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "completed_on",
+   "fieldtype": "Datetime",
+   "label": "Completed On",
+   "read_only": 1,
+   "no_copy": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-26 13:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Follow-up Schedule",
+ "owner": "Administrator",
+ "sort_field": "start_datetime",
+ "sort_order": "DESC",
+ "states": [],
+ "autoname": "naming_series:",
+ "title_field": "subject",
+ "show_title_field_in_link": 1,
+ "track_changes": 1,
+ "search_fields": "reference_name,platform,status",
+ "allow_rename": 0,
+ "max_attachments": 20,
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ]
+}

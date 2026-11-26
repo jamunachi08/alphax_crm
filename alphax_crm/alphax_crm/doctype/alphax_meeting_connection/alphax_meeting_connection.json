@@ -1,0 +1,185 @@
+{
+ "actions": [],
+ "autoname": "field:platform",
+ "creation": "2026-11-26 13:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "platform",
+  "enabled",
+  "auto_create",
+  "provider_sends_invites",
+  "column_break_1",
+  "use_organizer_account",
+  "host_email",
+  "credentials_section",
+  "setup_help",
+  "tenant_id",
+  "zoom_account_id",
+  "client_id",
+  "client_secret",
+  "google_key_file",
+  "webex_access_token",
+  "webex_refresh_token",
+  "status_section",
+  "last_tested_on",
+  "column_break_2",
+  "last_test_result"
+ ],
+ "fields": [
+  {
+   "fieldname": "platform",
+   "fieldtype": "Select",
+   "label": "Platform",
+   "options": "Microsoft Teams\nZoom\nGoogle Meet\nWebex",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "auto_create",
+   "fieldtype": "Check",
+   "label": "Create Meetings Automatically",
+   "default": "1",
+   "description": "New follow-ups via this platform have \"Create the online meeting automatically\" ticked."
+  },
+  {
+   "fieldname": "provider_sends_invites",
+   "fieldtype": "Check",
+   "label": "Let the Platform Send the Invitations",
+   "default": "1",
+   "depends_on": "eval:doc.platform!='Zoom'",
+   "description": "Attendees get the invitation from Outlook / Google Calendar / Webex (with the join link), and AlphaX does not send its own .ics."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "use_organizer_account",
+   "fieldtype": "Check",
+   "label": "Host in the Organizer's Own Account",
+   "default": "1",
+   "description": "The follow-up's organizer hosts the meeting when they have an account on the platform (same email); otherwise the default host below."
+  },
+  {
+   "fieldname": "host_email",
+   "fieldtype": "Data",
+   "label": "Default Host Account",
+   "options": "Email",
+   "reqd": 1,
+   "description": "Email of the platform account that hosts meetings when the organizer has none."
+  },
+  {
+   "fieldname": "credentials_section",
+   "fieldtype": "Section Break",
+   "label": "Credentials"
+  },
+  {
+   "fieldname": "setup_help",
+   "fieldtype": "HTML",
+   "label": "Setup"
+  },
+  {
+   "fieldname": "tenant_id",
+   "fieldtype": "Data",
+   "label": "Directory (Tenant) ID",
+   "depends_on": "eval:doc.platform=='Microsoft Teams'",
+   "mandatory_depends_on": "eval:doc.enabled && doc.platform=='Microsoft Teams'"
+  },
+  {
+   "fieldname": "zoom_account_id",
+   "fieldtype": "Data",
+   "label": "Account ID",
+   "depends_on": "eval:doc.platform=='Zoom'",
+   "mandatory_depends_on": "eval:doc.enabled && doc.platform=='Zoom'"
+  },
+  {
+   "fieldname": "client_id",
+   "fieldtype": "Data",
+   "label": "Client ID",
+   "depends_on": "eval:doc.platform!='Google Meet'",
+   "mandatory_depends_on": "eval:doc.enabled && ['Microsoft Teams','Zoom'].includes(doc.platform)"
+  },
+  {
+   "fieldname": "client_secret",
+   "fieldtype": "Password",
+   "label": "Client Secret",
+   "length": 1000,
+   "depends_on": "eval:doc.platform!='Google Meet'",
+   "mandatory_depends_on": "eval:doc.enabled && ['Microsoft Teams','Zoom'].includes(doc.platform)"
+  },
+  {
+   "fieldname": "google_key_file",
+   "fieldtype": "Attach",
+   "label": "Service Account Key (JSON)",
+   "depends_on": "eval:doc.platform=='Google Meet'",
+   "mandatory_depends_on": "eval:doc.enabled && doc.platform=='Google Meet'",
+   "description": "Attach as a private file. The service account needs domain-wide delegation for the Calendar scope."
+  },
+  {
+   "fieldname": "webex_access_token",
+   "fieldtype": "Password",
+   "label": "Access Token",
+   "length": 2000,
+   "depends_on": "eval:doc.platform=='Webex'",
+   "mandatory_depends_on": "eval:doc.enabled && doc.platform=='Webex'"
+  },
+  {
+   "fieldname": "webex_refresh_token",
+   "fieldtype": "Password",
+   "label": "Refresh Token",
+   "length": 2000,
+   "depends_on": "eval:doc.platform=='Webex'",
+   "description": "With Client ID and Secret, used to renew the access token automatically."
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "fieldname": "last_tested_on",
+   "fieldtype": "Datetime",
+   "label": "Last Tested On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_test_result",
+   "fieldtype": "Small Text",
+   "label": "Last Test Result",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-26 13:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Meeting Connection",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ]
+}

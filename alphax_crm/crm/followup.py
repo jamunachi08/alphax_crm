@@ -1,0 +1,166 @@
+"""Follow-up mechanism for AlphaX CRM.
+
+A complete, history-keeping follow-up loop for Lead / PreLead / Opportunity:
+
+  * Each AlphaX Follow-up records one touch (channel, direction, outcome,
+    duration, summary) and the next step (next action + next follow-up date).
+  * On save it threads a phone/chat/email Communication onto the parent so the
+    whole history shows in the activity timeline,
+  * stamps last-activity (who / what / when) and resets idle,
+  * pushes the next follow-up date onto the parent, and
+  * raises a reminder (ToDo) for the agent on that date.
+
+`log_followup` is the whitelisted entry point used by the "Log Follow-up"
+button on each form.
+"""
+
+import frappe
+from frappe import _
+from frappe.utils import now_datetime, cint
+
+MEDIUM = {"Call": "Phone", "Email": "Email", "WhatsApp": "Chat", "SMS": "SMS",
+          "Meeting": "Event", "Visit": "Visit", "Other": "Other"}
+NEXT_DATE_FIELD = {"Lead": "alphax_next_contact_date", "AlphaX PreLead": "follow_up_date",
+                   "Opportunity": "alphax_next_activity_date"}
+
+
+def process_followup(doc):
+    ref_dt, ref_name = doc.reference_doctype, doc.reference_name
+    if not frappe.db.exists(ref_dt, ref_name):
+        return
+
+    # System placeholders (e.g. the blank follow-up created when a Lead is postponed) are not a
+    # contact with the client: no timeline communication, no "last activity" stamp.
+    system = bool(doc.flags.get("alphax_system"))
+
+    # 1) Thread a Communication so the touch shows in the timeline history.
+    if not system:
+        _log_communication(doc)
+
+    # 2) Stamp last activity (who/what/when) + reset idle.
+    if not system:
+        try:
+            from alphax_crm.crm.activity import record_activity
+
+            atype = f"{doc.channel} ({doc.direction})" if doc.direction else doc.channel
+            if doc.meeting_type:
+                atype = f"{atype} · {doc.meeting_type}"
+            if doc.outcome:
+                atype = f"{atype} · {doc.outcome}"
+            record_activity(ref_dt, ref_name, atype, doc.agent, (doc.summary or "")[:180])
+        except Exception:
+            frappe.log_error(title="AlphaX CRM: followup activity", message=frappe.get_traceback())
+
+    # 3) Push the next follow-up date onto the parent record.
+    if doc.next_follow_up_date:
+        field = NEXT_DATE_FIELD.get(ref_dt)
+        if field and frappe.get_meta(ref_dt).has_field(field):
+            frappe.db.set_value(ref_dt, ref_name, field, doc.next_follow_up_date, update_modified=False)
+        # 0.50: the next date is booked as a scheduled follow-up with reminders (pop-up + email),
+        # replacing the old ToDo, so there is one reminder system.
+        try:
+            from alphax_crm.crm.followup_hub import book_next
+
+            book_next(doc)
+        except Exception:
+            frappe.log_error(title="AlphaX CRM: book next follow-up", message=frappe.get_traceback())
+
+
+def _log_communication(doc):
+    secs = cint(doc.duration)
+    dur = ""
+    if secs:
+        m, s = divmod(secs, 60)
+        dur = f" · {m}m {s}s" if m else f" · {s}s"
+    content = f"<b>{doc.channel}"
+    if doc.meeting_type:
+        content += f" — {doc.meeting_type}"
+    content += f" — {doc.outcome or 'logged'}</b>{dur}"
+    if doc.summary:
+        content += "<br>" + frappe.utils.escape_html(doc.summary)
+    if doc.next_action:
+        content += "<br><i>Next: " + frappe.utils.escape_html(doc.next_action) + "</i>"
+    from alphax_crm.crm.activity import owner_line
+
+    content += owner_line(doc.reference_doctype, doc.reference_name)
+
+    phone = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "mobile_no") \
+        if frappe.get_meta(doc.reference_doctype).has_field("mobile_no") else None
+
+    comm = frappe.get_doc({
+        "doctype": "Communication",
+        "communication_type": "Communication",
+        "communication_medium": MEDIUM.get(doc.channel, "Other"),
+        "sent_or_received": "Sent" if doc.direction == "Outgoing" else "Received",
+        "subject": f"Follow-up — {doc.channel} ({doc.outcome or ''})".strip(" ()"),
+        "content": content,
+        "reference_doctype": doc.reference_doctype,
+        "reference_name": doc.reference_name,
+        "phone_no": phone,
+        "communication_date": doc.follow_up_datetime,
+        "status": "Linked",
+    })
+    comm.flags.alphax_generated = True
+    comm.flags.ignore_permissions = True
+    comm.insert(ignore_permissions=True)
+
+
+@frappe.whitelist()
+def log_followup(reference_doctype, reference_name, channel="Call", direction="Outgoing",
+                 outcome="Connected", duration=0, summary=None, next_action=None,
+                 next_follow_up_date=None, follow_up_datetime=None, meeting_type=None, schedule=None,
+                 next_follow_up_time=None, next_follow_up_via=None):
+    doc = frappe.get_doc({
+        "doctype": "AlphaX Follow-up",
+        "reference_doctype": reference_doctype,
+        "reference_name": reference_name,
+        "channel": channel,
+        "meeting_type": meeting_type if channel == "Meeting" else None,
+        "direction": direction,
+        "outcome": outcome,
+        "duration": cint(duration),
+        "summary": summary or "",
+        "next_action": next_action or "",
+        "next_follow_up_date": next_follow_up_date or None,
+        "next_follow_up_time": next_follow_up_time or "10:00:00",
+        "next_follow_up_via": next_follow_up_via or "Call",
+        "follow_up_datetime": follow_up_datetime or now_datetime(),
+        "agent": frappe.session.user,
+    })
+    frappe.get_doc(reference_doctype, reference_name).check_permission("write")
+    doc.insert(ignore_permissions=True)
+    if schedule:  # outcome of a scheduled meeting (Schedule Follow-up screen / reminder pop-up)
+        from alphax_crm.crm.schedule import link_logged_followup
+
+        link_logged_followup(schedule, doc.name)
+    return doc.name
+
+
+@frappe.whitelist()
+def get_history(reference_doctype, reference_name):
+    """Return the follow-up history for a record (newest first), each row with the Lead Owner."""
+    from alphax_crm.crm.automation import lead_owner_of
+
+    frappe.get_doc(reference_doctype, reference_name).check_permission("read")
+    rows = frappe.get_all(
+        "AlphaX Follow-up",
+        filters={"reference_doctype": reference_doctype, "reference_name": reference_name},
+        fields=["name", "follow_up_datetime", "channel", "meeting_type", "direction", "outcome",
+                "agent", "lead_owner", "summary", "next_action", "next_follow_up_date"],
+        order_by="follow_up_datetime desc",
+    )
+    current = lead_owner_of(reference_doctype, reference_name)
+    for r in rows:
+        r.lead_owner = r.lead_owner or current
+        r.lead_owner_name = frappe.utils.get_fullname(r.lead_owner) if r.lead_owner else ""
+    return rows
+
+
+@frappe.whitelist()
+def activity_owner(reference_doctype, reference_name):
+    """Lead Owner shown on the Activities tab of Lead / Opportunity / PreLead forms."""
+    from alphax_crm.crm.automation import lead_owner_of
+
+    frappe.get_doc(reference_doctype, reference_name).check_permission("read")
+    user = lead_owner_of(reference_doctype, reference_name)
+    return {"user": user, "full_name": frappe.utils.get_fullname(user) if user else ""}
