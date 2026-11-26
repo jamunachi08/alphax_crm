@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "creation": "2026-11-25 17:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "attendee_type",
+  "user",
+  "email",
+  "full_name",
+  "attendance"
+ ],
+ "fields": [
+  {
+   "fieldname": "attendee_type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "Internal\nExternal",
+   "default": "Internal",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "in_list_view": 1,
+   "columns": 3,
+   "depends_on": "eval:doc.attendee_type=='Internal'",
+   "mandatory_depends_on": "eval:doc.attendee_type=='Internal'"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email",
+   "in_list_view": 1,
+   "columns": 3,
+   "fetch_from": "user.email",
+   "fetch_if_empty": 1,
+   "mandatory_depends_on": "eval:doc.attendee_type=='External'"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "in_list_view": 1,
+   "columns": 2,
+   "fetch_from": "user.full_name",
+   "fetch_if_empty": 1
+  },
+  {
+   "fieldname": "attendance",
+   "fieldtype": "Select",
+   "label": "Attendance",
+   "options": "Required\nOptional",
+   "default": "Required",
+   "in_list_view": 1,
+   "columns": 2
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-25 17:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "AlphaX CRM",
+ "name": "AlphaX Follow-up Attendee",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}
